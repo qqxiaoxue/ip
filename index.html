@@ -3,104 +3,332 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IP 查询示例</title>
+
+<title>IP环境分析</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f7fa;
-    padding: 30px;
+
+:root{
+    --bg:#080b14;
+    --card:#131929;
+    --card2:#1b2337;
+    --border:rgba(255,255,255,.08);
+    --text:#fff;
+    --sub:#98a2b3;
+    --success:#22c55e;
 }
 
-.card {
-    max-width: 600px;
-    margin: auto;
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-h2 {
-    margin-top: 0;
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top,#1e3a8a 0%,transparent 35%),
+        radial-gradient(circle at right,#581c87 0%,transparent 25%),
+        var(--bg);
+
+    color:var(--text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    padding:32px 16px;
 }
 
-.item {
-    margin: 12px 0;
-    padding: 10px;
-    background: #f8f9fb;
-    border-radius: 6px;
+.container{
+    max-width:1200px;
+    margin:auto;
 }
 
-.label {
-    font-weight: bold;
-    color: #555;
+/* 顶部卡片 */
+
+.hero{
+    background:rgba(19,25,41,.8);
+    backdrop-filter:blur(20px);
+
+    border:1px solid var(--border);
+
+    border-radius:28px;
+
+    padding:40px;
+
+    margin-bottom:24px;
 }
 
-.loading {
-    color: #999;
+.logo{
+    font-size:14px;
+    color:#94a3b8;
+    margin-bottom:20px;
 }
+
+.ip{
+    font-size:clamp(32px,6vw,64px);
+    font-weight:800;
+    margin-bottom:15px;
+    letter-spacing:-1px;
+}
+
+.location{
+    color:#cbd5e1;
+    margin-bottom:25px;
+}
+
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.tag{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:999px;
+    padding:10px 18px;
+}
+
+.tag.success{
+    background:rgba(34,197,94,.15);
+    color:#4ade80;
+    border-color:rgba(34,197,94,.25);
+}
+
+.copy-btn{
+    margin-top:24px;
+    background:#3b82f6;
+    border:none;
+    color:white;
+    padding:12px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.copy-btn:hover{
+    opacity:.9;
+}
+
+/* 信息区域 */
+
+.grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(240px,1fr));
+
+    gap:18px;
+}
+
+.card{
+    background:rgba(19,25,41,.85);
+    backdrop-filter:blur(20px);
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    padding:24px;
+}
+
+.label{
+    font-size:13px;
+    color:var(--sub);
+    margin-bottom:10px;
+}
+
+.value{
+    font-size:24px;
+    font-weight:700;
+}
+
+.small{
+    font-size:18px;
+}
+
+.loading{
+
+    text-align:center;
+    padding:100px 20px;
+    font-size:22px;
+    color:#94a3b8;
+}
+
+.error{
+    color:#ef4444;
+}
+
+.footer{
+    margin-top:24px;
+    color:#64748b;
+    text-align:center;
+    font-size:13px;
+}
+
 </style>
 </head>
-
 <body>
 
-<div class="card">
-    <h2>🌍 IP 信息查询</h2>
+<div class="container">
 
-    <div id="result" class="loading">
-        正在获取信息...
+<div id="loading" class="loading">
+    正在分析当前 IP 环境...
+</div>
+
+<div id="app" style="display:none;">
+
+    <div class="hero">
+
+        <div class="logo">
+            🌐 IP Environment Analysis
+        </div>
+
+        <div class="ip" id="ip">
+            -
+        </div>
+
+        <div class="location" id="location">
+            -
+        </div>
+
+        <div class="tags">
+            <div class="tag" id="countryTag">-</div>
+            <div class="tag" id="typeTag">-</div>
+            <div class="tag success">
+                ✅ 风险等级：低
+            </div>
+        </div>
+
+        <button class="copy-btn" onclick="copyIP()">
+            复制 IP 地址
+        </button>
+
     </div>
+
+    <div class="grid" id="cards"></div>
+
+    <div class="footer">
+        Powered by ip.fs.kg
+    </div>
+
+</div>
+
 </div>
 
 <script>
-async function loadIPInfo() {
-    const result = document.getElementById("result");
 
-    try {
-        const response = await fetch("https://ip.fs.kg/json");
-        const data = await response.json();
+let currentIP = '';
 
-        result.innerHTML = `
-            <div class="item">
-                <span class="label">IP 地址：</span>${data.ip || "-"}
-            </div>
+function copyIP() {
 
-            <div class="item">
-                <span class="label">国家：</span>${data.country || "-"}
-            </div>
+    navigator.clipboard
+    .writeText(currentIP)
+    .then(() => {
+        alert("IP 已复制");
+    });
+}
 
-            <div class="item">
-                <span class="label">城市：</span>${data.city || "-"}
-            </div>
+function card(title,value,small=false){
 
-            <div class="item">
-                <span class="label">运营商：</span>${data.org || "-"}
-            </div>
+    return `
+    <div class="card">
+        <div class="label">${title}</div>
+        <div class="value ${small ? 'small' : ''}">
+            ${value || '-'}
+        </div>
+    </div>
+    `;
+}
 
-            <div class="item">
-                <span class="label">ASN：</span>${data.asn || "-"}
-            </div>
+async function loadInfo(){
 
-            <div class="item">
-                <span class="label">时区：</span>${data.timezone || "-"}
-            </div>
+    try{
 
-            <div class="item">
-                <span class="label">纬度：</span>${data.latitude || "-"}
-            </div>
+        const res = await fetch(
+            'https://ip.fs.kg/json'
+        );
 
-            <div class="item">
-                <span class="label">经度：</span>${data.longitude || "-"}
-            </div>
-        `;
-    } catch (err) {
-        result.innerHTML =
-            '<span style="color:red;">获取失败：' + err.message + '</span>';
+        const data = await res.json();
+
+        currentIP = data.ip;
+
+        document.getElementById("ip")
+            .innerText = data.ip;
+
+        document.getElementById("location")
+            .innerText =
+            `${data.city || '-'}, ${data.region || '-'}`;
+
+        document.getElementById("countryTag")
+            .innerText =
+            `🌏 ${data.country}`;
+
+        document.getElementById("typeTag")
+            .innerText =
+            data.type;
+
+        document.getElementById("cards")
+            .innerHTML =
+
+            card('ASN','AS'+data.asn) +
+
+            card('国家',data.country) +
+
+            card('地区',data.region) +
+
+            card('城市',data.city) +
+
+            card('时区',
+            data.timezone,true) +
+
+            card('数据中心节点',
+            data.colo) +
+
+            card('TLS版本',
+            data.tlsVersion) +
+
+            card('HTTP协议',
+            data.httpProtocol) +
+
+            card('浏览器语言',
+            data.acceptLanguage,true) +
+
+            card('纬度',
+            data.latitude) +
+
+            card('经度',
+            data.longitude) +
+
+            card('时间戳',
+            new Date(data.ts)
+            .toLocaleString(),
+            true);
+
+        document.getElementById("loading")
+            .style.display="none";
+
+        document.getElementById("app")
+            .style.display="block";
+
+    }
+    catch(err){
+
+        document.getElementById("loading")
+        .innerHTML =
+        `<div class="error">
+            获取失败：${err.message}
+         </div>`;
+
+        console.error(err);
     }
 }
 
-loadIPInfo();
+loadInfo();
+
 </script>
 
 </body>
