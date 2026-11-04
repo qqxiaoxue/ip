@@ -8,7 +8,7 @@
 <style>
 :root{
     --bg:#f8fafc;
-    --card:#fff;
+    --card:#ffffff;
     --border:#e5e7eb;
     --text:#111827;
     --sub:#6b7280;
@@ -39,7 +39,7 @@ body{
 }
 
 .hero{
-    background:var(--card);
+    background:#fff;
     border:1px solid var(--border);
     border-radius:24px;
     padding:32px;
@@ -116,19 +116,6 @@ body{
     font-size:18px;
 }
 
-.actions{
-    margin-top:20px;
-}
-
-.copy-btn{
-    border:none;
-    padding:12px 18px;
-    border-radius:12px;
-    background:#111827;
-    color:#fff;
-    cursor:pointer;
-}
-
 .grid{
     display:grid;
     grid-template-columns:
@@ -137,7 +124,7 @@ body{
 }
 
 .card{
-    background:white;
+    background:#fff;
     border:1px solid var(--border);
     border-radius:20px;
     padding:24px;
@@ -156,7 +143,7 @@ body{
 
 .analysis{
     margin-top:20px;
-    background:white;
+    background:#fff;
     border:1px solid var(--border);
     border-radius:20px;
     padding:24px;
@@ -167,8 +154,8 @@ body{
 }
 
 .analysis p{
-    line-height:1.8;
     color:#374151;
+    line-height:1.8;
 }
 
 .loading{
@@ -220,18 +207,12 @@ placeholder="输入 IP 地址，例如 8.8.8.8">
 -
 </div>
 
-<div class="actions">
-<button class="copy-btn" onclick="copyIP()">
-复制 IP
-</button>
-</div>
-
 </div>
 
 <div class="grid">
 
 <div class="card">
-<div class="label">环境类型</div>
+<div class="label">网络类型</div>
 <div id="networkType" class="value">-</div>
 </div>
 
@@ -246,12 +227,12 @@ placeholder="输入 IP 地址，例如 8.8.8.8">
 </div>
 
 <div class="card">
-<div class="label">TLS</div>
+<div class="label">TLS版本</div>
 <div id="tls" class="value">-</div>
 </div>
 
 <div class="card">
-<div class="label">节点</div>
+<div class="label">边缘节点</div>
 <div id="colo" class="value">-</div>
 </div>
 
@@ -264,7 +245,7 @@ placeholder="输入 IP 地址，例如 8.8.8.8">
 
 <div class="analysis">
 
-<h3>分析结果</h3>
+<h3>环境分析</h3>
 
 <p id="analysisText">
 -
@@ -278,25 +259,46 @@ placeholder="输入 IP 地址，例如 8.8.8.8">
 
 <script>
 
-let currentIP = '';
+const countryMap = {
+    JP:"日本",
+    CN:"中国",
+    HK:"中国香港",
+    MO:"中国澳门",
+    TW:"中国台湾",
+    US:"美国",
+    SG:"新加坡",
+    KR:"韩国",
+    DE:"德国",
+    FR:"法国",
+    GB:"英国",
+    CA:"加拿大",
+    AU:"澳大利亚",
+    RU:"俄罗斯",
+    IN:"印度"
+};
 
-function copyIP(){
-
-    if(!currentIP) return;
-
-    navigator.clipboard
-        .writeText(currentIP)
-        .then(()=>{
-            alert("IP已复制");
-        });
-}
+const cityMap = {
+    Tokyo:"东京",
+    Osaka:"大阪",
+    Kyoto:"京都",
+    Beijing:"北京",
+    Shanghai:"上海",
+    Shenzhen:"深圳",
+    Guangzhou:"广州",
+    "Hong Kong":"香港",
+    Singapore:"新加坡",
+    Seoul:"首尔",
+    London:"伦敦",
+    "New York":"纽约",
+    "Los Angeles":"洛杉矶"
+};
 
 function calculateRisk(data){
 
     const text = `
-        ${data.org || ''}
-        ${data.isp || ''}
-        ${data.asn || ''}
+        ${data.org || ""}
+        ${data.isp || ""}
+        ${data.asn || ""}
     `.toLowerCase();
 
     let score = 0;
@@ -306,57 +308,57 @@ function calculateRisk(data){
     const rules = [
 
         {
-            keywords:['amazon','aws'],
+            keywords:["aws","amazon"],
             score:45,
-            reason:'Amazon AWS'
+            reason:"Amazon AWS"
         },
 
         {
-            keywords:['google'],
+            keywords:["google"],
             score:45,
-            reason:'Google Cloud'
+            reason:"Google Cloud"
         },
 
         {
-            keywords:['azure','microsoft'],
+            keywords:["microsoft","azure"],
             score:45,
-            reason:'Microsoft Azure'
+            reason:"Microsoft Azure"
         },
 
         {
-            keywords:['cloudflare'],
+            keywords:["cloudflare"],
             score:35,
-            reason:'Cloudflare'
+            reason:"Cloudflare"
         },
 
         {
-            keywords:['digitalocean'],
+            keywords:["digitalocean"],
             score:45,
-            reason:'DigitalOcean'
+            reason:"DigitalOcean"
         },
 
         {
-            keywords:['linode'],
+            keywords:["linode"],
             score:45,
-            reason:'Linode'
+            reason:"Linode"
         },
 
         {
-            keywords:['vultr'],
+            keywords:["vultr"],
             score:45,
-            reason:'Vultr'
+            reason:"Vultr"
         },
 
         {
-            keywords:['ovh'],
+            keywords:["ovh"],
             score:45,
-            reason:'OVH'
+            reason:"OVH"
         },
 
         {
-            keywords:['hetzner'],
+            keywords:["hetzner"],
             score:45,
-            reason:'Hetzner'
+            reason:"Hetzner"
         }
 
     ];
@@ -364,10 +366,9 @@ function calculateRisk(data){
     for(const rule of rules){
 
         if(rule.keywords.some(
-            v => text.includes(v)
+            item => text.includes(item)
         )){
             score += rule.score;
-
             reasons.push(
                 `${rule.reason} (+${rule.score})`
             );
@@ -382,33 +383,33 @@ function calculateRisk(data){
 
     if(score <= 19){
 
-        type = '住宅/企业网络';
-        level = '✅ 低风险';
-        badgeClass = 'safe';
+        type = "住宅/企业网络";
+        level = "✅ 低风险";
+        badgeClass = "safe";
 
     }else if(score <= 39){
 
-        type = '机房或骨干出口';
-        level = '⚠️ 中风险';
-        badgeClass = 'warn';
+        type = "骨干网络";
+        level = "⚠️ 中风险";
+        badgeClass = "warn";
 
     }else if(score <= 69){
 
-        type = '云主机/托管服务器';
-        level = '⚠️ 较高风险';
-        badgeClass = 'warn';
+        type = "云主机/托管服务器";
+        level = "⚠️ 较高风险";
+        badgeClass = "warn";
 
     }else{
 
-        type = '代理/VPN高概率';
-        level = '❌ 高风险';
-        badgeClass = 'danger';
+        type = "代理/VPN高概率";
+        level = "❌ 高风险";
+        badgeClass = "danger";
     }
 
     if(reasons.length === 0){
 
         reasons.push(
-        '未命中已知云厂商或托管服务商规则，推测为普通互联网接入网络。'
+            "未发现明显云服务商或托管网络特征，推测为普通互联网接入网络。"
         );
     }
 
@@ -432,42 +433,55 @@ async function load(targetIP=''){
         const data = await fetch(url)
             .then(r=>r.json());
 
-        currentIP = data.ip;
+        const city =
+            cityMap[data.city]
+            || data.city
+            || "未知城市";
 
-        const risk =
-            calculateRisk(data);
+        const region =
+            cityMap[data.region]
+            || data.region
+            || "未知地区";
+
+        const country =
+            countryMap[data.country]
+            || data.country
+            || "未知国家";
+
+        const risk = calculateRisk(data);
 
         document.getElementById('ip')
-            .textContent=data.ip || '-';
+            .textContent =
+            data.ip || '-';
 
         document.getElementById('location')
-            .textContent=
-            `${data.city || '-'} · ${data.region || '-'} · ${data.country || '-'}`;
+            .textContent =
+            `${city} · ${region} · ${country}`;
 
         document.getElementById('asn')
-            .textContent=
+            .textContent =
             data.asn
             ? `AS${data.asn}`
             : '-';
 
         document.getElementById('tls')
-            .textContent=
+            .textContent =
             data.tlsVersion || '-';
 
         document.getElementById('colo')
-            .textContent=
+            .textContent =
             data.colo || '-';
 
         document.getElementById('protocol')
-            .textContent=
+            .textContent =
             data.httpProtocol || '-';
 
         document.getElementById('networkType')
-            .textContent=
+            .textContent =
             risk.type;
 
         document.getElementById('riskScore')
-            .textContent=
+            .textContent =
             risk.score;
 
         const badge =
@@ -483,9 +497,8 @@ async function load(targetIP=''){
 
         document.getElementById(
             'analysisText'
-        ).innerHTML = `
-            ${risk.reasons.join('<br>')}
-        `;
+        ).innerHTML =
+            risk.reasons.join('<br>');
 
         document.getElementById('loading')
             .style.display='none';
@@ -493,11 +506,11 @@ async function load(targetIP=''){
         document.getElementById('app')
             .style.display='block';
 
-    }catch(e){
+    }catch(error){
 
         alert(
             '查询失败：' +
-            e.message
+            error.message
         );
     }
 }
@@ -505,14 +518,10 @@ async function load(targetIP=''){
 function queryIP(){
 
     const ip =
-        document.getElementById(
-            'ipInput'
-        ).value.trim();
-
-    if(!ip){
-        load();
-        return;
-    }
+        document
+        .getElementById('ipInput')
+        .value
+        .trim();
 
     load(ip);
 }
@@ -530,10 +539,12 @@ document.addEventListener(
             if(e.key==='Enter'){
                 queryIP();
             }
+
         }
     );
 
     load();
+
 });
 
 </script>
