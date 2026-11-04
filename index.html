@@ -8,7 +8,7 @@
 <style>
 :root{
     --bg:#f8fafc;
-    --card:#ffffff;
+    --card:#fff;
     --border:#e5e7eb;
     --text:#111827;
     --sub:#6b7280;
@@ -63,14 +63,14 @@ body{
 .search button{
     border:none;
     background:#111827;
-    color:white;
+    color:#fff;
     padding:14px 22px;
     border-radius:14px;
     cursor:pointer;
 }
 
 .search button:hover{
-    opacity:.9;
+    opacity:.92;
 }
 
 .badge{
@@ -150,12 +150,12 @@ body{
 }
 
 .analysis h3{
-    margin-bottom:15px;
+    margin-bottom:12px;
 }
 
 .analysis p{
-    color:#374151;
     line-height:1.8;
+    color:#374151;
 }
 
 .loading{
@@ -163,6 +163,17 @@ body{
     margin-top:120px;
     color:var(--sub);
     font-size:20px;
+}
+
+@media(max-width:768px){
+
+    .ip{
+        font-size:40px;
+    }
+
+    .search{
+        flex-direction:column;
+    }
 }
 </style>
 </head>
@@ -260,45 +271,100 @@ placeholder="输入 IP 地址，例如 8.8.8.8">
 <script>
 
 const countryMap = {
-    JP:"日本",
-    CN:"中国",
-    HK:"中国香港",
-    MO:"中国澳门",
-    TW:"中国台湾",
-    US:"美国",
-    SG:"新加坡",
-    KR:"韩国",
-    DE:"德国",
-    FR:"法国",
-    GB:"英国",
-    CA:"加拿大",
-    AU:"澳大利亚",
-    RU:"俄罗斯",
-    IN:"印度"
+JP:"日本",
+CN:"中国",
+HK:"中国香港",
+MO:"中国澳门",
+TW:"中国台湾",
+US:"美国",
+SG:"新加坡",
+KR:"韩国",
+GB:"英国",
+FR:"法国",
+DE:"德国",
+CA:"加拿大",
+AU:"澳大利亚",
+RU:"俄罗斯",
+IN:"印度"
 };
 
 const cityMap = {
-    Tokyo:"东京",
-    Osaka:"大阪",
-    Kyoto:"京都",
-    Beijing:"北京",
-    Shanghai:"上海",
-    Shenzhen:"深圳",
-    Guangzhou:"广州",
-    "Hong Kong":"香港",
-    Singapore:"新加坡",
-    Seoul:"首尔",
-    London:"伦敦",
-    "New York":"纽约",
-    "Los Angeles":"洛杉矶"
+
+Tokyo:"东京",
+Osaka:"大阪",
+Kyoto:"京都",
+Nagoya:"名古屋",
+Yokohama:"横滨",
+Kobe:"神户",
+Sapporo:"札幌",
+Fukuoka:"福冈",
+
+Beijing:"北京",
+Shanghai:"上海",
+Guangzhou:"广州",
+Shenzhen:"深圳",
+Chengdu:"成都",
+Hangzhou:"杭州",
+Nanjing:"南京",
+Wuhan:"武汉",
+Tianjin:"天津",
+Chongqing:"重庆",
+
+"Hong Kong":"香港",
+
+Taipei:"台北",
+Taichung:"台中",
+Kaohsiung:"高雄",
+
+Singapore:"新加坡",
+
+Seoul:"首尔",
+Busan:"釜山",
+Incheon:"仁川",
+
+"New York":"纽约",
+"Los Angeles":"洛杉矶",
+Chicago:"芝加哥",
+Seattle:"西雅图",
+Boston:"波士顿",
+Dallas:"达拉斯",
+Houston:"休斯敦",
+Miami:"迈阿密",
+Atlanta:"亚特兰大",
+Phoenix:"菲尼克斯",
+Denver:"丹佛",
+Austin:"奥斯汀",
+"San Francisco":"旧金山",
+
+London:"伦敦",
+Manchester:"曼彻斯特",
+Birmingham:"伯明翰",
+
+Berlin:"柏林",
+Frankfurt:"法兰克福",
+Munich:"慕尼黑",
+
+Paris:"巴黎",
+Lyon:"里昂",
+
+Toronto:"多伦多",
+Vancouver:"温哥华",
+Montreal:"蒙特利尔",
+
+Sydney:"悉尼",
+Melbourne:"墨尔本",
+Brisbane:"布里斯班",
+Perth:"珀斯",
+
+Moscow:"莫斯科"
 };
 
 function calculateRisk(data){
 
     const text = `
-        ${data.org || ""}
-        ${data.isp || ""}
-        ${data.asn || ""}
+        ${data.org || ''}
+        ${data.isp || ''}
+        ${data.asn || ''}
     `.toLowerCase();
 
     let score = 0;
@@ -307,59 +373,15 @@ function calculateRisk(data){
 
     const rules = [
 
-        {
-            keywords:["aws","amazon"],
-            score:45,
-            reason:"Amazon AWS"
-        },
-
-        {
-            keywords:["google"],
-            score:45,
-            reason:"Google Cloud"
-        },
-
-        {
-            keywords:["microsoft","azure"],
-            score:45,
-            reason:"Microsoft Azure"
-        },
-
-        {
-            keywords:["cloudflare"],
-            score:35,
-            reason:"Cloudflare"
-        },
-
-        {
-            keywords:["digitalocean"],
-            score:45,
-            reason:"DigitalOcean"
-        },
-
-        {
-            keywords:["linode"],
-            score:45,
-            reason:"Linode"
-        },
-
-        {
-            keywords:["vultr"],
-            score:45,
-            reason:"Vultr"
-        },
-
-        {
-            keywords:["ovh"],
-            score:45,
-            reason:"OVH"
-        },
-
-        {
-            keywords:["hetzner"],
-            score:45,
-            reason:"Hetzner"
-        }
+        {keywords:['amazon','aws'],score:45,name:'Amazon AWS'},
+        {keywords:['google'],score:45,name:'Google Cloud'},
+        {keywords:['microsoft','azure'],score:45,name:'Microsoft Azure'},
+        {keywords:['digitalocean'],score:45,name:'DigitalOcean'},
+        {keywords:['linode'],score:45,name:'Linode'},
+        {keywords:['vultr'],score:45,name:'Vultr'},
+        {keywords:['ovh'],score:45,name:'OVH'},
+        {keywords:['hetzner'],score:45,name:'Hetzner'},
+        {keywords:['cloudflare'],score:35,name:'Cloudflare'}
 
     ];
 
@@ -370,15 +392,15 @@ function calculateRisk(data){
         )){
             score += rule.score;
             reasons.push(
-                `${rule.reason} (+${rule.score})`
+                `命中规则：${rule.name}（+${rule.score}）`
             );
         }
     }
 
     score = Math.min(score,100);
 
-    let type;
     let level;
+    let type;
     let badgeClass;
 
     if(score <= 19){
@@ -404,6 +426,7 @@ function calculateRisk(data){
         type = "代理/VPN高概率";
         level = "❌ 高风险";
         badgeClass = "danger";
+
     }
 
     if(reasons.length === 0){
@@ -431,7 +454,7 @@ async function load(targetIP=''){
             : 'https://ip.fs.kg/json';
 
         const data = await fetch(url)
-            .then(r=>r.json());
+            .then(r => r.json());
 
         const city =
             cityMap[data.city]
@@ -485,9 +508,7 @@ async function load(targetIP=''){
             risk.score;
 
         const badge =
-            document.getElementById(
-                'riskBadge'
-            );
+            document.getElementById('riskBadge');
 
         badge.className =
             `badge ${risk.badgeClass}`;
@@ -495,9 +516,8 @@ async function load(targetIP=''){
         badge.textContent =
             risk.level;
 
-        document.getElementById(
-            'analysisText'
-        ).innerHTML =
+        document.getElementById('analysisText')
+            .innerHTML =
             risk.reasons.join('<br>');
 
         document.getElementById('loading')
@@ -508,20 +528,19 @@ async function load(targetIP=''){
 
     }catch(error){
 
-        alert(
-            '查询失败：' +
-            error.message
-        );
+        document.getElementById('loading')
+            .innerHTML =
+            '查询失败：' + error.message;
+
     }
 }
 
 function queryIP(){
 
     const ip =
-        document
-        .getElementById('ipInput')
-        .value
-        .trim();
+        document.getElementById(
+            'ipInput'
+        ).value.trim();
 
     load(ip);
 }
@@ -544,9 +563,7 @@ document.addEventListener(
     );
 
     load();
-
 });
-
 </script>
 
 </body>
