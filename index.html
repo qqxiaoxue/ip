@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>IP环境分析</title>
+<title>IP 环境分析</title>
 
 <style>
 
 :root{
-    --bg:#080b14;
-    --card:#131929;
-    --card2:#1b2337;
-    --border:rgba(255,255,255,.08);
-    --text:#fff;
-    --sub:#98a2b3;
-    --success:#22c55e;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#111827;
+    --sub:#6b7280;
+    --green:#16a34a;
+    --green-bg:#ecfdf5;
 }
 
 *{
@@ -25,12 +24,7 @@
 }
 
 body{
-    min-height:100vh;
-    background:
-        radial-gradient(circle at top,#1e3a8a 0%,transparent 35%),
-        radial-gradient(circle at right,#581c87 0%,transparent 25%),
-        var(--bg);
-
+    background:var(--bg);
     color:var(--text);
     font-family:
         Inter,
@@ -38,111 +32,120 @@ body{
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-
-    padding:32px 16px;
+    line-height:1.5;
 }
 
 .container{
-    max-width:1200px;
+    max-width:1100px;
     margin:auto;
+    padding:40px 20px;
 }
 
-/* 顶部卡片 */
+/* 顶部 */
 
 .hero{
-    background:rgba(19,25,41,.8);
-    backdrop-filter:blur(20px);
-
+    background:white;
     border:1px solid var(--border);
+    border-radius:24px;
+    padding:48px;
+    margin-bottom:24px;
+}
 
-    border-radius:28px;
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
 
-    padding:40px;
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:var(--green-bg);
+    color:var(--green);
+
+    font-size:14px;
+    font-weight:600;
 
     margin-bottom:24px;
 }
 
-.logo{
+.title{
+    color:var(--sub);
     font-size:14px;
-    color:#94a3b8;
-    margin-bottom:20px;
+    margin-bottom:8px;
 }
 
 .ip{
-    font-size:clamp(32px,6vw,64px);
+    font-size:56px;
     font-weight:800;
-    margin-bottom:15px;
-    letter-spacing:-1px;
+    letter-spacing:-2px;
+    line-height:1.1;
 }
 
 .location{
-    color:#cbd5e1;
-    margin-bottom:25px;
+    margin-top:12px;
+    color:var(--sub);
+    font-size:18px;
 }
 
-.tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
+.actions{
+    margin-top:28px;
 }
 
-.tag{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:999px;
-    padding:10px 18px;
-}
-
-.tag.success{
-    background:rgba(34,197,94,.15);
-    color:#4ade80;
-    border-color:rgba(34,197,94,.25);
-}
-
-.copy-btn{
-    margin-top:24px;
-    background:#3b82f6;
+.btn{
     border:none;
-    color:white;
-    padding:12px 24px;
-    border-radius:12px;
     cursor:pointer;
+
+    background:#111827;
+    color:white;
+
+    padding:12px 20px;
+    border-radius:12px;
+
     font-size:14px;
+    font-weight:600;
 }
 
-.copy-btn:hover{
-    opacity:.9;
+.btn:hover{
+    opacity:.92;
 }
 
-/* 信息区域 */
+/* 信息区 */
+
+.section-title{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:16px;
+}
 
 .grid{
     display:grid;
     grid-template-columns:
     repeat(auto-fit,minmax(240px,1fr));
 
-    gap:18px;
+    gap:16px;
+
+    margin-bottom:28px;
 }
 
 .card{
-    background:rgba(19,25,41,.85);
-    backdrop-filter:blur(20px);
+    background:var(--card);
 
     border:1px solid var(--border);
 
-    border-radius:22px;
+    border-radius:20px;
 
     padding:24px;
 }
 
 .label{
-    font-size:13px;
     color:var(--sub);
+    font-size:13px;
     margin-bottom:10px;
 }
 
 .value{
-    font-size:24px;
+    font-size:28px;
     font-weight:700;
 }
 
@@ -150,23 +153,75 @@ body{
     font-size:18px;
 }
 
-.loading{
+.status-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
+    gap:16px;
+}
 
+.status{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+}
+
+.status-head{
+    color:var(--sub);
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.status-value{
+    font-size:18px;
+    font-weight:600;
+}
+
+.success{
+    color:var(--green);
+}
+
+.raw{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:24px;
+    margin-top:24px;
+}
+
+pre{
+    overflow:auto;
+    white-space:pre-wrap;
+    font-size:13px;
+    color:#374151;
+}
+
+.loading{
     text-align:center;
-    padding:100px 20px;
+    margin-top:120px;
     font-size:22px;
-    color:#94a3b8;
+    color:var(--sub);
 }
 
 .error{
-    color:#ef4444;
+    color:#dc2626;
 }
 
-.footer{
-    margin-top:24px;
-    color:#64748b;
-    text-align:center;
-    font-size:13px;
+@media(max-width:768px){
+
+    .hero{
+        padding:28px;
+    }
+
+    .ip{
+        font-size:34px;
+        word-break:break-all;
+    }
+
+    .location{
+        font-size:16px;
+    }
 }
 
 </style>
@@ -183,36 +238,76 @@ body{
 
     <div class="hero">
 
-        <div class="logo">
-            🌐 IP Environment Analysis
+        <div class="badge">
+            ✅ 环境状态正常
         </div>
 
-        <div class="ip" id="ip">
+        <div class="title">
+            当前公网 IP
+        </div>
+
+        <div id="ip" class="ip">
             -
         </div>
 
-        <div class="location" id="location">
+        <div id="location" class="location">
             -
         </div>
 
-        <div class="tags">
-            <div class="tag" id="countryTag">-</div>
-            <div class="tag" id="typeTag">-</div>
-            <div class="tag success">
-                ✅ 风险等级：低
-            </div>
+        <div class="actions">
+            <button class="btn" onclick="copyIP()">
+                复制 IP 地址
+            </button>
         </div>
-
-        <button class="copy-btn" onclick="copyIP()">
-            复制 IP 地址
-        </button>
 
     </div>
 
-    <div class="grid" id="cards"></div>
+    <h2 class="section-title">网络环境</h2>
 
-    <div class="footer">
-        Powered by ip.fs.kg
+    <div class="status-grid">
+
+        <div class="status">
+            <div class="status-head">IP 类型</div>
+            <div class="status-value" id="type">-</div>
+        </div>
+
+        <div class="status">
+            <div class="status-head">HTTPS</div>
+            <div class="status-value success" id="httpsStatus">
+                -
+            </div>
+        </div>
+
+        <div class="status">
+            <div class="status-head">TLS</div>
+            <div class="status-value" id="tls">
+                -
+            </div>
+        </div>
+
+        <div class="status">
+            <div class="status-head">边缘节点</div>
+            <div class="status-value" id="colo">
+                -
+            </div>
+        </div>
+
+    </div>
+
+    <br>
+
+    <h2 class="section-title">详细信息</h2>
+
+    <div id="cards" class="grid"></div>
+
+    <div class="raw">
+
+        <h2 class="section-title">
+            原始数据
+        </h2>
+
+        <pre id="json"></pre>
+
     </div>
 
 </div>
@@ -223,33 +318,34 @@ body{
 
 let currentIP = '';
 
-function copyIP() {
+function copyIP(){
 
     navigator.clipboard
-    .writeText(currentIP)
-    .then(() => {
-        alert("IP 已复制");
-    });
+        .writeText(currentIP)
+        .then(() => {
+            alert("IP 已复制");
+        });
+
 }
 
 function card(title,value,small=false){
 
     return `
-    <div class="card">
-        <div class="label">${title}</div>
-        <div class="value ${small ? 'small' : ''}">
-            ${value || '-'}
+        <div class="card">
+            <div class="label">${title}</div>
+            <div class="value ${small ? 'small' : ''}">
+                ${value || '-'}
+            </div>
         </div>
-    </div>
     `;
 }
 
-async function loadInfo(){
+async function load(){
 
     try{
 
         const res = await fetch(
-            'https://ip.fs.kg/json'
+            "https://ip.fs.kg/json"
         );
 
         const data = await res.json();
@@ -261,52 +357,56 @@ async function loadInfo(){
 
         document.getElementById("location")
             .innerText =
-            `${data.city || '-'}, ${data.region || '-'}`;
+            `${data.city || '-'} · ${data.region || '-'} · ${data.country || '-'}`;
 
-        document.getElementById("countryTag")
-            .innerText =
-            `🌏 ${data.country}`;
+        document.getElementById("type")
+            .innerText = data.type || "-";
 
-        document.getElementById("typeTag")
+        document.getElementById("tls")
+            .innerText = data.tlsVersion || "-";
+
+        document.getElementById("colo")
+            .innerText = data.colo || "-";
+
+        document.getElementById("httpsStatus")
             .innerText =
-            data.type;
+            data.httpProtocol === "HTTPS"
+            ? "已启用"
+            : "未启用";
 
         document.getElementById("cards")
-            .innerHTML =
+        .innerHTML =
 
-            card('ASN','AS'+data.asn) +
+            card("ASN","AS"+data.asn) +
 
-            card('国家',data.country) +
+            card("国家",data.country) +
 
-            card('地区',data.region) +
+            card("国家代码",data.country_code) +
 
-            card('城市',data.city) +
+            card("地区",data.region) +
 
-            card('时区',
-            data.timezone,true) +
+            card("城市",data.city) +
 
-            card('数据中心节点',
-            data.colo) +
+            card("时区",data.timezone,true) +
 
-            card('TLS版本',
-            data.tlsVersion) +
+            card("语言",data.acceptLanguage,true) +
 
-            card('HTTP协议',
-            data.httpProtocol) +
+            card("纬度",data.latitude) +
 
-            card('浏览器语言',
-            data.acceptLanguage,true) +
+            card("经度",data.longitude) +
 
-            card('纬度',
-            data.latitude) +
+            card("HTTP协议",data.httpProtocol) +
 
-            card('经度',
-            data.longitude) +
+            card("TLS加密套件",
+            data.tlsCipher,true);
 
-            card('时间戳',
-            new Date(data.ts)
-            .toLocaleString(),
-            true);
+        document.getElementById("json")
+            .textContent =
+            JSON.stringify(
+                data,
+                null,
+                2
+            );
 
         document.getElementById("loading")
             .style.display="none";
@@ -318,16 +418,15 @@ async function loadInfo(){
     catch(err){
 
         document.getElementById("loading")
-        .innerHTML =
-        `<div class="error">
-            获取失败：${err.message}
-         </div>`;
-
-        console.error(err);
+        .innerHTML = `
+            <div class="error">
+                获取失败：${err.message}
+            </div>
+        `;
     }
 }
 
-loadInfo();
+load();
 
 </script>
 
