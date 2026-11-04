@@ -2,161 +2,181 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IP 环境分析</title>
 
 <style>
-
 :root{
-  --bg:#f6f8fb;
-  --card:#ffffff;
-  --border:#e5e7eb;
-  --text:#111827;
-  --muted:#6b7280;
-  --success:#16a34a;
-  --success-bg:#ecfdf5;
+    --bg:#f8fafc;
+    --card:#fff;
+    --border:#e5e7eb;
+    --text:#111827;
+    --sub:#6b7280;
+    --green:#16a34a;
+    --green-bg:#ecfdf5;
+    --yellow:#d97706;
+    --yellow-bg:#fef3c7;
+    --red:#dc2626;
+    --red-bg:#fee2e2;
 }
 
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 body{
-  background:var(--bg);
-  font-family:
-  Inter,
-  -apple-system,
-  BlinkMacSystemFont,
-  "Segoe UI",
-  sans-serif;
-  color:var(--text);
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
 .container{
-  max-width:1100px;
-  margin:auto;
-  padding:40px 20px;
+    max-width:1100px;
+    margin:auto;
+    padding:32px 20px;
 }
 
 .hero{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:40px;
-  margin-bottom:20px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:32px;
+    margin-bottom:20px;
+}
+
+.search{
+    display:flex;
+    gap:12px;
+    margin-bottom:24px;
+}
+
+.search input{
+    flex:1;
+    padding:14px 16px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    font-size:15px;
+}
+
+.search button{
+    border:none;
+    background:#111827;
+    color:white;
+    padding:14px 22px;
+    border-radius:14px;
+    cursor:pointer;
+}
+
+.search button:hover{
+    opacity:.9;
 }
 
 .badge{
-  display:inline-flex;
-  align-items:center;
-  padding:8px 14px;
-  border-radius:999px;
-  background:var(--success-bg);
-  color:var(--success);
-  font-size:14px;
-  font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.safe{
+    background:var(--green-bg);
+    color:var(--green);
+}
+
+.warn{
+    background:var(--yellow-bg);
+    color:var(--yellow);
+}
+
+.danger{
+    background:var(--red-bg);
+    color:var(--red);
 }
 
 .ip-title{
-  color:var(--muted);
-  margin-top:25px;
+    color:var(--sub);
+    font-size:14px;
+    margin-top:20px;
 }
 
 .ip{
-  font-size:54px;
-  font-weight:800;
-  letter-spacing:-2px;
-  margin-top:10px;
-  word-break:break-word;
+    font-size:56px;
+    font-weight:800;
+    letter-spacing:-2px;
+    word-break:break-all;
 }
 
 .location{
-  margin-top:12px;
-  color:var(--muted);
-  font-size:18px;
+    margin-top:10px;
+    color:var(--sub);
+    font-size:18px;
 }
 
 .actions{
-  margin-top:24px;
+    margin-top:20px;
 }
 
-.btn{
-  border:none;
-  background:#111827;
-  color:white;
-  padding:12px 18px;
-  border-radius:12px;
-  cursor:pointer;
-  font-size:14px;
-}
-
-.btn:hover{
-  opacity:.9;
-}
-
-.section{
-  margin-top:24px;
-}
-
-.section-title{
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:14px;
+.copy-btn{
+    border:none;
+    padding:12px 18px;
+    border-radius:12px;
+    background:#111827;
+    color:#fff;
+    cursor:pointer;
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:
-  repeat(auto-fit,minmax(220px,1fr));
-  gap:16px;
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
 }
 
 .card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:24px;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:24px;
 }
 
 .label{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:8px;
+    color:var(--sub);
+    font-size:13px;
+    margin-bottom:8px;
 }
 
 .value{
-  font-size:24px;
-  font-weight:700;
+    font-size:24px;
+    font-weight:700;
 }
 
-.status{
-  margin-top:20px;
-  padding:20px;
-  background:#f8fafc;
-  border:1px solid var(--border);
-  border-radius:20px;
+.analysis{
+    margin-top:20px;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:24px;
 }
 
-.status-title{
-  font-weight:700;
-  margin-bottom:10px;
+.analysis h3{
+    margin-bottom:15px;
 }
 
-.status-desc{
-  color:var(--muted);
-  line-height:1.7;
+.analysis p{
+    line-height:1.8;
+    color:#374151;
 }
 
 .loading{
-  text-align:center;
-  margin-top:120px;
-  font-size:22px;
-  color:var(--muted);
+    text-align:center;
+    margin-top:120px;
+    color:var(--sub);
+    font-size:20px;
 }
-
 </style>
 </head>
 <body>
@@ -164,90 +184,93 @@ body{
 <div class="container">
 
 <div id="loading" class="loading">
-正在分析当前网络环境...
+正在分析网络环境...
 </div>
 
 <div id="app" style="display:none">
 
-  <div class="hero">
+<div class="hero">
 
-    <div id="riskBadge" class="badge">
-      ✅ 安全网络
-    </div>
+<div class="search">
 
-    <div class="ip-title">
-      当前公网 IP
-    </div>
+<input
+id="ipInput"
+type="text"
+placeholder="输入 IP 地址，例如 8.8.8.8">
 
-    <div id="ip" class="ip">
-      -
-    </div>
+<button onclick="queryIP()">
+查询
+</button>
 
-    <div id="location" class="location">
-      -
-    </div>
+</div>
 
-    <div class="actions">
-      <button class="btn" onclick="copyIP()">
-        复制 IP
-      </button>
-    </div>
+<div id="riskBadge" class="badge safe">
+✅ 低风险
+</div>
 
-  </div>
+<div class="ip-title">
+当前 IP
+</div>
 
-  <div class="section">
+<div id="ip" class="ip">
+-
+</div>
 
-    <div class="section-title">
-      网络环境
-    </div>
+<div id="location" class="location">
+-
+</div>
 
-    <div class="grid">
+<div class="actions">
+<button class="copy-btn" onclick="copyIP()">
+复制 IP
+</button>
+</div>
 
-      <div class="card">
-        <div class="label">网络类型</div>
-        <div id="type" class="value">-</div>
-      </div>
+</div>
 
-      <div class="card">
-        <div class="label">ASN</div>
-        <div id="asn" class="value">-</div>
-      </div>
+<div class="grid">
 
-      <div class="card">
-        <div class="label">TLS</div>
-        <div id="tls" class="value">-</div>
-      </div>
+<div class="card">
+<div class="label">环境类型</div>
+<div id="networkType" class="value">-</div>
+</div>
 
-      <div class="card">
-        <div class="label">节点</div>
-        <div id="colo" class="value">-</div>
-      </div>
+<div class="card">
+<div class="label">风险评分</div>
+<div id="riskScore" class="value">-</div>
+</div>
 
-      <div class="card">
-        <div class="label">HTTP 协议</div>
-        <div id="protocol" class="value">-</div>
-      </div>
+<div class="card">
+<div class="label">ASN</div>
+<div id="asn" class="value">-</div>
+</div>
 
-      <div class="card">
-        <div class="label">语言</div>
-        <div id="lang" class="value">-</div>
-      </div>
+<div class="card">
+<div class="label">TLS</div>
+<div id="tls" class="value">-</div>
+</div>
 
-    </div>
+<div class="card">
+<div class="label">节点</div>
+<div id="colo" class="value">-</div>
+</div>
 
-  </div>
+<div class="card">
+<div class="label">协议</div>
+<div id="protocol" class="value">-</div>
+</div>
 
-  <div class="status">
+</div>
 
-    <div class="status-title">
-      分析结果
-    </div>
+<div class="analysis">
 
-    <div id="analysis" class="status-desc">
-      -
-    </div>
+<h3>分析结果</h3>
 
-  </div>
+<p id="analysisText">
+-
+</p>
+
+</div>
 
 </div>
 
@@ -257,124 +280,261 @@ body{
 
 let currentIP = '';
 
-const DATACENTER_ASNS = [
-  13335,
-  16509,
-  15169,
-  8075,
-  14061,
-  63949,
-  20473,
-  16276,
-  24940
-];
-
 function copyIP(){
 
-  navigator.clipboard
-    .writeText(currentIP)
-    .then(() => alert('IP已复制'));
+    if(!currentIP) return;
 
+    navigator.clipboard
+        .writeText(currentIP)
+        .then(()=>{
+            alert("IP已复制");
+        });
 }
 
-function analyze(data){
+function calculateRisk(data){
 
-  const asn = Number(data.asn);
+    const text = `
+        ${data.org || ''}
+        ${data.isp || ''}
+        ${data.asn || ''}
+    `.toLowerCase();
 
-  let type = '普通网络';
+    let score = 0;
 
-  let badge = '✅ 安全网络';
+    const reasons = [];
 
-  let desc =
-  '未发现明显数据中心特征，当前网络更接近普通互联网接入环境。';
+    const rules = [
 
-  if(DATACENTER_ASNS.includes(asn)){
+        {
+            keywords:['amazon','aws'],
+            score:45,
+            reason:'Amazon AWS'
+        },
 
-    type = '数据中心';
+        {
+            keywords:['google'],
+            score:45,
+            reason:'Google Cloud'
+        },
 
-    badge = '⚠️ 机房网络';
+        {
+            keywords:['azure','microsoft'],
+            score:45,
+            reason:'Microsoft Azure'
+        },
 
-    desc =
-    '该 ASN 属于知名云服务商或数据中心运营商，存在机房网络特征。';
+        {
+            keywords:['cloudflare'],
+            score:35,
+            reason:'Cloudflare'
+        },
 
-  }
+        {
+            keywords:['digitalocean'],
+            score:45,
+            reason:'DigitalOcean'
+        },
 
-  return {
-    type,
-    badge,
-    desc
-  };
+        {
+            keywords:['linode'],
+            score:45,
+            reason:'Linode'
+        },
 
+        {
+            keywords:['vultr'],
+            score:45,
+            reason:'Vultr'
+        },
+
+        {
+            keywords:['ovh'],
+            score:45,
+            reason:'OVH'
+        },
+
+        {
+            keywords:['hetzner'],
+            score:45,
+            reason:'Hetzner'
+        }
+
+    ];
+
+    for(const rule of rules){
+
+        if(rule.keywords.some(
+            v => text.includes(v)
+        )){
+            score += rule.score;
+
+            reasons.push(
+                `${rule.reason} (+${rule.score})`
+            );
+        }
+    }
+
+    score = Math.min(score,100);
+
+    let type;
+    let level;
+    let badgeClass;
+
+    if(score <= 19){
+
+        type = '住宅/企业网络';
+        level = '✅ 低风险';
+        badgeClass = 'safe';
+
+    }else if(score <= 39){
+
+        type = '机房或骨干出口';
+        level = '⚠️ 中风险';
+        badgeClass = 'warn';
+
+    }else if(score <= 69){
+
+        type = '云主机/托管服务器';
+        level = '⚠️ 较高风险';
+        badgeClass = 'warn';
+
+    }else{
+
+        type = '代理/VPN高概率';
+        level = '❌ 高风险';
+        badgeClass = 'danger';
+    }
+
+    if(reasons.length === 0){
+
+        reasons.push(
+        '未命中已知云厂商或托管服务商规则，推测为普通互联网接入网络。'
+        );
+    }
+
+    return {
+        score,
+        type,
+        level,
+        badgeClass,
+        reasons
+    };
 }
 
-async function load(){
+async function load(targetIP=''){
 
-  try{
+    try{
 
-    const data =
-    await fetch(
-      'https://ip.fs.kg/json'
-    ).then(r=>r.json());
+        const url = targetIP
+            ? `https://ip.fs.kg/${targetIP}/json`
+            : 'https://ip.fs.kg/json';
 
-    currentIP = data.ip;
+        const data = await fetch(url)
+            .then(r=>r.json());
 
-    const result =
-    analyze(data);
+        currentIP = data.ip;
 
-    document.getElementById('ip')
-      .textContent = data.ip;
+        const risk =
+            calculateRisk(data);
 
-    document.getElementById('location')
-      .textContent =
-      `${data.city || '-'} · ${data.region || '-'} · ${data.country || '-'}`;
+        document.getElementById('ip')
+            .textContent=data.ip || '-';
 
-    document.getElementById('type')
-      .textContent = result.type;
+        document.getElementById('location')
+            .textContent=
+            `${data.city || '-'} · ${data.region || '-'} · ${data.country || '-'}`;
 
-    document.getElementById('asn')
-      .textContent = 'AS' + (data.asn || '-');
+        document.getElementById('asn')
+            .textContent=
+            data.asn
+            ? `AS${data.asn}`
+            : '-';
 
-    document.getElementById('tls')
-      .textContent =
-      data.tlsVersion || '-';
+        document.getElementById('tls')
+            .textContent=
+            data.tlsVersion || '-';
 
-    document.getElementById('colo')
-      .textContent =
-      data.colo || '-';
+        document.getElementById('colo')
+            .textContent=
+            data.colo || '-';
 
-    document.getElementById('protocol')
-      .textContent =
-      data.httpProtocol || '-';
+        document.getElementById('protocol')
+            .textContent=
+            data.httpProtocol || '-';
 
-    document.getElementById('lang')
-      .textContent =
-      data.acceptLanguage || '-';
+        document.getElementById('networkType')
+            .textContent=
+            risk.type;
 
-    document.getElementById('riskBadge')
-      .textContent =
-      result.badge;
+        document.getElementById('riskScore')
+            .textContent=
+            risk.score;
 
-    document.getElementById('analysis')
-      .textContent =
-      result.desc;
+        const badge =
+            document.getElementById(
+                'riskBadge'
+            );
 
-    document.getElementById('loading')
-      .style.display='none';
+        badge.className =
+            `badge ${risk.badgeClass}`;
 
-    document.getElementById('app')
-      .style.display='block';
+        badge.textContent =
+            risk.level;
 
-  }catch(error){
+        document.getElementById(
+            'analysisText'
+        ).innerHTML = `
+            ${risk.reasons.join('<br>')}
+        `;
 
-    document.getElementById('loading')
-      .innerHTML =
-      '获取失败：' + error.message;
+        document.getElementById('loading')
+            .style.display='none';
 
-  }
+        document.getElementById('app')
+            .style.display='block';
 
+    }catch(e){
+
+        alert(
+            '查询失败：' +
+            e.message
+        );
+    }
 }
 
-load();
+function queryIP(){
+
+    const ip =
+        document.getElementById(
+            'ipInput'
+        ).value.trim();
+
+    if(!ip){
+        load();
+        return;
+    }
+
+    load(ip);
+}
+
+document.addEventListener(
+'DOMContentLoaded',
+()=>{
+
+    document
+    .getElementById('ipInput')
+    .addEventListener(
+        'keydown',
+        e=>{
+
+            if(e.key==='Enter'){
+                queryIP();
+            }
+        }
+    );
+
+    load();
+});
 
 </script>
 
