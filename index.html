@@ -2,198 +2,252 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>IP 环境分析</title>
 
 <style>
 
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --border:#e5e7eb;
+  --text:#111827;
+  --muted:#6b7280;
+  --success:#16a34a;
+  --success-bg:#ecfdf5;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
 body{
-background:#f6f8fb;
-font-family:
-Inter,
-system-ui;
-margin:0;
-padding:40px 20px;
-color:#111827;
+  background:var(--bg);
+  font-family:
+  Inter,
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  sans-serif;
+  color:var(--text);
 }
 
 .container{
-max-width:1100px;
-margin:auto;
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px;
 }
 
 .hero{
-background:#fff;
-border:1px solid #eaeef5;
-border-radius:24px;
-padding:40px;
-margin-bottom:20px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:40px;
+  margin-bottom:20px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 14px;
+  border-radius:999px;
+  background:var(--success-bg);
+  color:var(--success);
+  font-size:14px;
+  font-weight:600;
+}
+
+.ip-title{
+  color:var(--muted);
+  margin-top:25px;
 }
 
 .ip{
-font-size:52px;
-font-weight:800;
+  font-size:54px;
+  font-weight:800;
+  letter-spacing:-2px;
+  margin-top:10px;
+  word-break:break-word;
 }
 
 .location{
-margin-top:12px;
-color:#6b7280;
+  margin-top:12px;
+  color:var(--muted);
+  font-size:18px;
+}
+
+.actions{
+  margin-top:24px;
+}
+
+.btn{
+  border:none;
+  background:#111827;
+  color:white;
+  padding:12px 18px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+.section{
+  margin-top:24px;
+}
+
+.section-title{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:14px;
 }
 
 .grid{
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
-margin-top:20px;
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
 }
 
 .card{
-background:#fff;
-border:1px solid #eaeef5;
-padding:20px;
-border-radius:18px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:24px;
 }
 
 .label{
-font-size:12px;
-color:#6b7280;
-margin-bottom:8px;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:8px;
 }
 
 .value{
-font-size:22px;
-font-weight:700;
+  font-size:24px;
+  font-weight:700;
 }
 
-.tag{
-display:inline-block;
-padding:6px 12px;
-border-radius:999px;
-margin-top:16px;
-background:#ecfdf5;
-color:#15803d;
+.status{
+  margin-top:20px;
+  padding:20px;
+  background:#f8fafc;
+  border:1px solid var(--border);
+  border-radius:20px;
 }
 
-.score{
-margin-top:10px;
-font-size:20px;
-font-weight:700;
+.status-title{
+  font-weight:700;
+  margin-bottom:10px;
 }
 
-.progress{
-height:8px;
-background:#edf2f7;
-border-radius:999px;
-overflow:hidden;
-margin-top:10px;
+.status-desc{
+  color:var(--muted);
+  line-height:1.7;
 }
 
-.progress-bar{
-height:100%;
-width:0;
-background:#22c55e;
+.loading{
+  text-align:center;
+  margin-top:120px;
+  font-size:22px;
+  color:var(--muted);
 }
 
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
-<div class="hero">
-
-<div id="ip" class="ip">
-Loading...
+<div id="loading" class="loading">
+正在分析当前网络环境...
 </div>
 
-<div id="location"
-class="location">
--
-</div>
+<div id="app" style="display:none">
 
-<div id="type"
-class="tag">
-检测中
-</div>
+  <div class="hero">
 
-<div id="risk"
-class="score">
-风险评分 0/100
-</div>
+    <div id="riskBadge" class="badge">
+      ✅ 安全网络
+    </div>
 
-<div class="progress">
-<div id="bar"
-class="progress-bar">
-</div>
-</div>
+    <div class="ip-title">
+      当前公网 IP
+    </div>
 
-</div>
+    <div id="ip" class="ip">
+      -
+    </div>
 
-<div class="grid">
+    <div id="location" class="location">
+      -
+    </div>
 
-<div class="card">
-<div class="label">
-住宅置信度
-</div>
-<div id="residential"
-class="value">
--
-</div>
-</div>
+    <div class="actions">
+      <button class="btn" onclick="copyIP()">
+        复制 IP
+      </button>
+    </div>
 
-<div class="card">
-<div class="label">
-数据中心概率
-</div>
-<div id="datacenter"
-class="value">
--
-</div>
-</div>
+  </div>
 
-<div class="card">
-<div class="label">
-VPN
-</div>
-<div id="vpn"
-class="value">
--
-</div>
-</div>
+  <div class="section">
 
-<div class="card">
-<div class="label">
-Proxy
-</div>
-<div id="proxy"
-class="value">
--
-</div>
-</div>
+    <div class="section-title">
+      网络环境
+    </div>
 
-<div class="card">
-<div class="label">
-Tor
-</div>
-<div id="tor"
-class="value">
--
-</div>
-</div>
+    <div class="grid">
 
-<div class="card">
-<div class="label">
-ASN
-</div>
-<div id="asn"
-class="value">
--
-</div>
-</div>
+      <div class="card">
+        <div class="label">网络类型</div>
+        <div id="type" class="value">-</div>
+      </div>
+
+      <div class="card">
+        <div class="label">ASN</div>
+        <div id="asn" class="value">-</div>
+      </div>
+
+      <div class="card">
+        <div class="label">TLS</div>
+        <div id="tls" class="value">-</div>
+      </div>
+
+      <div class="card">
+        <div class="label">节点</div>
+        <div id="colo" class="value">-</div>
+      </div>
+
+      <div class="card">
+        <div class="label">HTTP 协议</div>
+        <div id="protocol" class="value">-</div>
+      </div>
+
+      <div class="card">
+        <div class="label">语言</div>
+        <div id="lang" class="value">-</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="status">
+
+    <div class="status-title">
+      分析结果
+    </div>
+
+    <div id="analysis" class="status-desc">
+      -
+    </div>
+
+  </div>
 
 </div>
 
@@ -201,55 +255,122 @@ class="value">
 
 <script>
 
+let currentIP = '';
+
+const DATACENTER_ASNS = [
+  13335,
+  16509,
+  15169,
+  8075,
+  14061,
+  63949,
+  20473,
+  16276,
+  24940
+];
+
+function copyIP(){
+
+  navigator.clipboard
+    .writeText(currentIP)
+    .then(() => alert('IP已复制'));
+
+}
+
+function analyze(data){
+
+  const asn = Number(data.asn);
+
+  let type = '普通网络';
+
+  let badge = '✅ 安全网络';
+
+  let desc =
+  '未发现明显数据中心特征，当前网络更接近普通互联网接入环境。';
+
+  if(DATACENTER_ASNS.includes(asn)){
+
+    type = '数据中心';
+
+    badge = '⚠️ 机房网络';
+
+    desc =
+    '该 ASN 属于知名云服务商或数据中心运营商，存在机房网络特征。';
+
+  }
+
+  return {
+    type,
+    badge,
+    desc
+  };
+
+}
+
 async function load(){
 
-const data =
-await fetch("/api/ip")
-.then(r=>r.json());
+  try{
 
-document.getElementById("ip")
-.textContent = data.ip;
+    const data =
+    await fetch(
+      'https://ip.fs.kg/json'
+    ).then(r=>r.json());
 
-document.getElementById("location")
-.textContent =
-`${data.city || '-'} ·
-${data.country || '-'}`;
+    currentIP = data.ip;
 
-document.getElementById("type")
-.textContent =
-data.analysis.type;
+    const result =
+    analyze(data);
 
-document.getElementById("risk")
-.textContent =
-`风险评分 ${data.analysis.riskScore}/100`;
+    document.getElementById('ip')
+      .textContent = data.ip;
 
-document.getElementById("bar")
-.style.width =
-data.analysis.riskScore + "%";
+    document.getElementById('location')
+      .textContent =
+      `${data.city || '-'} · ${data.region || '-'} · ${data.country || '-'}`;
 
-document.getElementById("residential")
-.textContent =
-data.analysis.residentialScore + "%";
+    document.getElementById('type')
+      .textContent = result.type;
 
-document.getElementById("datacenter")
-.textContent =
-data.analysis.datacenterScore + "%";
+    document.getElementById('asn')
+      .textContent = 'AS' + (data.asn || '-');
 
-document.getElementById("vpn")
-.textContent =
-data.analysis.vpnScore + "%";
+    document.getElementById('tls')
+      .textContent =
+      data.tlsVersion || '-';
 
-document.getElementById("proxy")
-.textContent =
-data.analysis.proxyScore + "%";
+    document.getElementById('colo')
+      .textContent =
+      data.colo || '-';
 
-document.getElementById("tor")
-.textContent =
-data.analysis.torScore + "%";
+    document.getElementById('protocol')
+      .textContent =
+      data.httpProtocol || '-';
 
-document.getElementById("asn")
-.textContent =
-"AS" + (data.asn || "-");
+    document.getElementById('lang')
+      .textContent =
+      data.acceptLanguage || '-';
+
+    document.getElementById('riskBadge')
+      .textContent =
+      result.badge;
+
+    document.getElementById('analysis')
+      .textContent =
+      result.desc;
+
+    document.getElementById('loading')
+      .style.display='none';
+
+    document.getElementById('app')
+      .style.display='block';
+
+  }catch(error){
+
+    document.getElementById('loading')
+      .innerHTML =
+      '获取失败：' + error.message;
+
+  }
 
 }
 
