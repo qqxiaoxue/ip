@@ -3,18 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>IP 环境分析</title>
 
 <style>
 
 :root{
-    --bg:#f8fafc;
-    --card:#ffffff;
-    --border:#e5e7eb;
-    --text:#111827;
-    --sub:#6b7280;
+    --bg:#f5f7fb;
+    --card:#fff;
+    --border:#e8edf5;
+    --text:#0f172a;
+    --sub:#64748b;
     --green:#16a34a;
-    --green-bg:#ecfdf5;
+    --greenbg:#ecfdf5;
+    --red:#dc2626;
+    --redbg:#fef2f2;
 }
 
 *{
@@ -25,14 +28,12 @@
 
 body{
     background:var(--bg);
-    color:var(--text);
     font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-    line-height:1.5;
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .container{
@@ -41,187 +42,237 @@ body{
     padding:40px 20px;
 }
 
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+}
+
 /* 顶部 */
 
 .hero{
-    background:white;
-    border:1px solid var(--border);
-    border-radius:24px;
-    padding:48px;
-    margin-bottom:24px;
-}
 
-.badge{
-    display:inline-flex;
+    padding:32px;
+
+    display:flex;
+    justify-content:space-between;
     align-items:center;
-    gap:8px;
 
-    padding:8px 14px;
-
-    border-radius:999px;
-
-    background:var(--green-bg);
-    color:var(--green);
-
-    font-size:14px;
-    font-weight:600;
-
-    margin-bottom:24px;
+    margin-bottom:20px;
 }
 
-.title{
+.ip-title{
     color:var(--sub);
     font-size:14px;
-    margin-bottom:8px;
 }
 
 .ip{
-    font-size:56px;
+
+    font-size:42px;
     font-weight:800;
-    letter-spacing:-2px;
-    line-height:1.1;
+
+    margin-top:10px;
 }
 
 .location{
     margin-top:12px;
     color:var(--sub);
+}
+
+.score{
+
+    text-align:right;
+}
+
+.status-circle{
+
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    border:3px solid #9ae6b4;
+
+    color:var(--green);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
     font-size:18px;
+    font-weight:700;
+
+    margin-left:auto;
 }
 
-.actions{
-    margin-top:28px;
+.score-value{
+
+    font-size:18px;
+
+    margin-top:10px;
 }
 
-.btn{
-    border:none;
-    cursor:pointer;
+.bar{
 
-    background:#111827;
-    color:white;
+    height:8px;
+    border-radius:999px;
 
-    padding:12px 20px;
-    border-radius:12px;
+    background:#edf2f7;
 
-    font-size:14px;
-    font-weight:600;
+    margin-top:10px;
 }
 
-.btn:hover{
-    opacity:.92;
+.bar-fill{
+
+    height:100%;
+    width:0%;
+
+    background:#22c55e;
+
+    border-radius:999px;
 }
 
-/* 信息区 */
+/* 类型 */
+
+.type-card{
+
+    padding:28px;
+
+    margin-bottom:20px;
+
+    display:flex;
+    gap:16px;
+    align-items:center;
+}
+
+.icon{
+
+    width:60px;
+    height:60px;
+
+    border-radius:14px;
+
+    background:#ecfdf5;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:28px;
+}
+
+.type-title{
+
+    font-size:24px;
+    font-weight:700;
+}
+
+.badge{
+
+    display:inline-block;
+
+    background:#ecfdf5;
+
+    color:#16a34a;
+
+    padding:3px 10px;
+
+    border-radius:999px;
+
+    font-size:12px;
+}
+
+.type-desc{
+
+    margin-top:6px;
+    color:var(--sub);
+}
+
+/* 详情 */
+
+.section{
+
+    padding:24px;
+}
 
 .section-title{
-    font-size:20px;
-    font-weight:700;
-    margin-bottom:16px;
+    font-size:18px;
+    margin-bottom:20px;
 }
 
 .grid{
+
     display:grid;
+
     grid-template-columns:
-    repeat(auto-fit,minmax(240px,1fr));
+    repeat(auto-fit,minmax(280px,1fr));
 
-    gap:16px;
-
-    margin-bottom:28px;
-}
-
-.card{
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:24px;
-}
-
-.label{
-    color:var(--sub);
-    font-size:13px;
-    margin-bottom:10px;
-}
-
-.value{
-    font-size:28px;
-    font-weight:700;
-}
-
-.small{
-    font-size:18px;
-}
-
-.status-grid{
-    display:grid;
-    grid-template-columns:
-    repeat(auto-fit,minmax(180px,1fr));
     gap:16px;
 }
 
-.status{
-    background:white;
-    border:1px solid var(--border);
+.info{
+
+    background:#fafbfd;
+
+    border:1px solid #eff2f6;
+
     border-radius:16px;
+
     padding:20px;
 }
 
-.status-head{
+.info-label{
+
     color:var(--sub);
     font-size:13px;
-    margin-bottom:6px;
+
+    margin-bottom:10px;
 }
 
-.status-value{
-    font-size:18px;
-    font-weight:600;
+.info-value{
+
+    font-size:22px;
+    font-weight:700;
 }
 
-.success{
-    color:var(--green);
-}
+/* 风险 */
 
-.raw{
-    background:white;
-    border:1px solid var(--border);
-    border-radius:20px;
+.risk{
+
+    margin-top:20px;
+
     padding:24px;
-    margin-top:24px;
 }
 
-pre{
-    overflow:auto;
-    white-space:pre-wrap;
-    font-size:13px;
-    color:#374151;
+.risk.safe{
+    background:var(--greenbg);
+    border:1px solid #a7f3d0;
+}
+
+.risk.danger{
+    background:var(--redbg);
+    border:1px solid #fecaca;
+}
+
+.risk-title{
+
+    font-size:20px;
+    font-weight:700;
+}
+
+.risk-desc{
+
+    margin-top:10px;
+
+    color:var(--sub);
 }
 
 .loading{
+
     text-align:center;
     margin-top:120px;
-    font-size:22px;
+
     color:var(--sub);
-}
-
-.error{
-    color:#dc2626;
-}
-
-@media(max-width:768px){
-
-    .hero{
-        padding:28px;
-    }
-
-    .ip{
-        font-size:34px;
-        word-break:break-all;
-    }
-
-    .location{
-        font-size:16px;
-    }
 }
 
 </style>
@@ -231,84 +282,95 @@ pre{
 <div class="container">
 
 <div id="loading" class="loading">
-    正在分析当前 IP 环境...
+正在检测网络环境...
 </div>
 
 <div id="app" style="display:none;">
 
-    <div class="hero">
+<div class="card hero">
 
-        <div class="badge">
-            ✅ 环境状态正常
+    <div>
+
+        <div class="ip-title">
+            IP 地址
         </div>
 
-        <div class="title">
-            当前公网 IP
+        <div id="ip" class="ip"></div>
+
+        <div id="location" class="location"></div>
+
+    </div>
+
+    <div class="score">
+
+        <div id="statusCircle"
+        class="status-circle">
+            安全
         </div>
 
-        <div id="ip" class="ip">
-            -
+        <div id="scoreText"
+        class="score-value">
+            0/100
         </div>
 
-        <div id="location" class="location">
-            -
-        </div>
-
-        <div class="actions">
-            <button class="btn" onclick="copyIP()">
-                复制 IP 地址
-            </button>
+        <div class="bar">
+            <div id="scoreBar"
+            class="bar-fill"></div>
         </div>
 
     </div>
 
-    <h2 class="section-title">网络环境</h2>
+</div>
 
-    <div class="status-grid">
+<div class="card type-card">
 
-        <div class="status">
-            <div class="status-head">IP 类型</div>
-            <div class="status-value" id="type">-</div>
+    <div id="typeIcon"
+    class="icon">
+        🏠
+    </div>
+
+    <div>
+
+        <div>
+            <span id="ipType"
+            class="type-title">
+                家庭宽带
+            </span>
+
+            <span class="badge">
+                低风险
+            </span>
         </div>
 
-        <div class="status">
-            <div class="status-head">HTTPS</div>
-            <div class="status-value success" id="httpsStatus">
-                -
-            </div>
-        </div>
-
-        <div class="status">
-            <div class="status-head">TLS</div>
-            <div class="status-value" id="tls">
-                -
-            </div>
-        </div>
-
-        <div class="status">
-            <div class="status-head">边缘节点</div>
-            <div class="status-value" id="colo">
-                -
-            </div>
+        <div id="ipTypeDesc"
+        class="type-desc">
         </div>
 
     </div>
 
-    <br>
+</div>
 
-    <h2 class="section-title">详细信息</h2>
+<div class="card section">
 
-    <div id="cards" class="grid"></div>
+<h2 class="section-title">
+详细信息
+</h2>
 
-    <div class="raw">
+<div class="grid" id="grid"></div>
 
-        <h2 class="section-title">
-            原始数据
-        </h2>
+</div>
 
-        <pre id="json"></pre>
+<div id="riskBox"
+class="risk safe">
 
+    <div class="risk-title">
+        ✅ 未检测到明显风险
     </div>
+
+    <div id="riskDesc"
+    class="risk-desc"></div>
+
+</div>
 
 </div>
 
@@ -316,117 +378,158 @@ pre{
 
 <script>
 
-let currentIP = '';
+function item(title,value){
 
-function copyIP(){
+return `
+<div class="info">
+    <div class="info-label">${title}</div>
+    <div class="info-value">${value||'-'}</div>
+</div>
+`;
 
-    navigator.clipboard
-        .writeText(currentIP)
-        .then(() => {
-            alert("IP 已复制");
-        });
-
-}
-
-function card(title,value,small=false){
-
-    return `
-        <div class="card">
-            <div class="label">${title}</div>
-            <div class="value ${small ? 'small' : ''}">
-                ${value || '-'}
-            </div>
-        </div>
-    `;
-}
-
-async function load(){
-
-    try{
-
-        const res = await fetch(
-            "https://ip.fs.kg/json"
-        );
-
-        const data = await res.json();
-
-        currentIP = data.ip;
-
-        document.getElementById("ip")
-            .innerText = data.ip;
-
-        document.getElementById("location")
-            .innerText =
-            `${data.city || '-'} · ${data.region || '-'} · ${data.country || '-'}`;
-
-        document.getElementById("type")
-            .innerText = data.type || "-";
-
-        document.getElementById("tls")
-            .innerText = data.tlsVersion || "-";
-
-        document.getElementById("colo")
-            .innerText = data.colo || "-";
-
-        document.getElementById("httpsStatus")
-            .innerText =
-            data.httpProtocol === "HTTPS"
-            ? "已启用"
-            : "未启用";
-
-        document.getElementById("cards")
-        .innerHTML =
-
-            card("ASN","AS"+data.asn) +
-
-            card("国家",data.country) +
-
-            card("国家代码",data.country_code) +
-
-            card("地区",data.region) +
-
-            card("城市",data.city) +
-
-            card("时区",data.timezone,true) +
-
-            card("语言",data.acceptLanguage,true) +
-
-            card("纬度",data.latitude) +
-
-            card("经度",data.longitude) +
-
-            card("HTTP协议",data.httpProtocol) +
-
-            card("TLS加密套件",
-            data.tlsCipher,true);
-
-        document.getElementById("json")
-            .textContent =
-            JSON.stringify(
-                data,
-                null,
-                2
-            );
-
-        document.getElementById("loading")
-            .style.display="none";
-
-        document.getElementById("app")
-            .style.display="block";
-
-    }
-    catch(err){
-
-        document.getElementById("loading")
-        .innerHTML = `
-            <div class="error">
-                获取失败：${err.message}
-            </div>
-        `;
-    }
 }
 
 load();
+
+async function load(){
+
+try{
+
+const res =
+await fetch("https://api.ipapi.is/");
+
+const data =
+await res.json();
+
+let score = 0;
+
+if(data.is_datacenter) score += 50;
+if(data.is_vpn) score += 20;
+if(data.is_proxy) score += 20;
+if(data.is_tor) score += 30;
+if(data.is_abuser) score += 30;
+
+let type = "家庭宽带";
+let desc =
+"住宅IP，来自常规互联网服务提供商";
+
+if(data.is_datacenter){
+
+type = "数据中心";
+desc =
+"检测到机房或云服务提供商网络";
+
+}
+
+if(data.is_vpn){
+
+type = "VPN 网络";
+desc =
+"检测到 VPN 服务";
+
+}
+
+if(data.is_proxy){
+
+type = "代理网络";
+desc =
+"检测到代理服务";
+
+}
+
+document.getElementById("ip")
+.innerText =
+data.ip;
+
+document.getElementById("location")
+.innerText =
+`${data.city || '-'} · ${data.region || '-'} · ${data.country || '-'}`;
+
+document.getElementById("scoreText")
+.innerText =
+`${score}/100`;
+
+document.getElementById("scoreBar")
+.style.width =
+score + "%";
+
+document.getElementById("ipType")
+.innerText = type;
+
+document.getElementById("ipTypeDesc")
+.innerText = desc;
+
+document.getElementById("grid")
+.innerHTML =
+
+item(
+"地理位置",
+`${data.country}
+ ${data.city || ''}`
+)+
+
+item(
+"运营商 / ASN",
+data.asn
+? `AS${data.asn}`
+: data.asn_org || '-'
+)+
+
+item(
+"时区",
+data.timezone
+)+
+
+item(
+"坐标位置",
+`${data.lat},
+ ${data.lon}`
+);
+
+const riskBox =
+document.getElementById("riskBox");
+
+const riskDesc =
+document.getElementById("riskDesc");
+
+if(score===0){
+
+riskDesc.innerText=
+"来自普通 ISP 网络，未发现 VPN、代理、Tor 或数据中心特征。";
+
+}else{
+
+riskBox.className=
+"risk danger";
+
+riskBox.querySelector(
+".risk-title"
+).innerText=
+"⚠️ 检测到潜在风险";
+
+riskDesc.innerText=
+`VPN:${data.is_vpn}
+  Proxy:${data.is_proxy}
+  Tor:${data.is_tor}
+  Datacenter:${data.is_datacenter}`;
+
+}
+
+document.getElementById("loading")
+.style.display="none";
+
+document.getElementById("app")
+.style.display="block";
+
+}catch(error){
+
+document.getElementById("loading")
+.innerHTML =
+error.message;
+
+}
+
+}
 
 </script>
 
